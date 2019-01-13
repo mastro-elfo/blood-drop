@@ -1,0 +1,41 @@
+import React, { Component } from 'react';
+
+export default class ErrorWrapper extends Component {
+  state = {};
+
+  componentDidCatch(error, info) {
+    console.error('Console Error', error, info, this.props);
+  }
+
+  static getDerivedStateFromError(error) {
+    // Update state so the next render will show the fallback UI.
+    return { error };
+  }
+
+  render() {
+    const { error } = this.state;
+    if (error) {
+      return (
+        <div
+          style={{
+            fontFamily: 'sans-serif',
+            letterSpacing: '0.1em',
+          }}
+        >
+          <h1>Something went terribly wrong</h1>
+          <h2>{error.message}</h2>
+          <ul>
+            {error.stack.split('\n').map((item, i) => (
+              <li key={i} style={{marginBottom: '1em'}}>{this.highlight(item)}</li>
+            ))}
+          </ul>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+
+  highlight(item) {
+    return item;
+  }
+}
